@@ -14,6 +14,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+// Set COOP headers for OAuth popups
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://virtual-courses-psi.vercel.app"],
