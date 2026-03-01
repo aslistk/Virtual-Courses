@@ -9,6 +9,16 @@ export const createReview = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
+    // Check if user is enrolled in the course
+    const isEnrolled = course.enrolledStudents?.includes(userId);
+    if (!isEnrolled) {
+      return res
+        .status(403)
+        .json({
+          message: "You must be enrolled in this course to leave a review",
+        });
+    }
+
     // Optional: prevent duplicate review by same user
     const alreadyReviewed = await Review.findOne({
       course: courseId,

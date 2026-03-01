@@ -313,37 +313,43 @@ function ViewCourse() {
         </div>
         <div className="mt-8 border-t pt-6">
           <h2 className="text-xl font-semibold mb-2">Write a Review</h2>
-          <div className="mb-4">
-            <div className="flex gap-1 mb-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FaStar
-                  key={star}
-                  onClick={() => setRating(star)}
-                  className={
-                    rating >= star ? "fill-yellow-400" : "fill-gray-300"
-                  }
-                />
-              ))}
+          {isEnrolled ? (
+            <div className="mb-4">
+              <div className="flex gap-1 mb-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar
+                    key={star}
+                    onClick={() => setRating(star)}
+                    className={
+                      rating >= star ? "fill-yellow-400" : "fill-gray-300"
+                    }
+                  />
+                ))}
+              </div>
+              <textarea
+                onChange={(e) => setComment(e.target.value)}
+                value={comment}
+                placeholder="Write your comment here..."
+                className="w-full border border-gray-300 rounded-lg p-2"
+                rows="3"
+              />
+              <button
+                className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+                onClick={handleReview}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ClipLoader size={30} color="white" />
+                ) : (
+                  "Submit Review"
+                )}
+              </button>
             </div>
-            <textarea
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-              placeholder="Write your comment here..."
-              className="w-full border border-gray-300 rounded-lg p-2"
-              rows="3"
-            />
-            <button
-              className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
-              onClick={handleReview}
-              disabled={loading}
-            >
-              {loading ? (
-                <ClipLoader size={30} color="white" />
-              ) : (
-                "Submit Review"
-              )}
-            </button>
-          </div>
+          ) : (
+            <p className="text-red-600 font-semibold">
+              You must enroll in this course to leave a review.
+            </p>
+          )}
           <div className="flex items-center gap-4 pt-4 border-t -mb-3.5">
             {creatorData?.photoUrl ? (
               <img
