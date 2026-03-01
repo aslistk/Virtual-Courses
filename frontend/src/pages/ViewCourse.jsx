@@ -195,7 +195,10 @@ function ViewCourse() {
             <div className="flex items-start flex-col justify-between">
               <div className="text-yellow-500 font-medium flex gap-2">
                 ⭐{avgRating}
-                <span className="text-gray-500"> (1,200 reviews)</span>
+                <span className="text-gray-500">
+                  {" "}
+                  ({selectedCourse?.reviews?.length || 0} reviews)
+                </span>
               </div>
               <div>
                 <span className="text-xl font-semibold text-black">
