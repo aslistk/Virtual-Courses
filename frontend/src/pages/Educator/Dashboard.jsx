@@ -16,9 +16,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
   const { creatorCourseData } = useSelector((state) => state.course);
-  // update based on your store
 
-  // Sample data - Replace with real API/course data
   const courseProgressData =
     creatorCourseData?.map((course) => ({
       name: course.title.slice(0, 10) + "...",

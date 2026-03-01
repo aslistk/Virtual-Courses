@@ -24,31 +24,28 @@ function CreateLecture() {
         { lectureTitle },
         { withCredentials: true },
       );
-      console.log(result.data);
       dispatch(setLectureData([...lectureData, result.data.lecture]));
       toast.success("Lecture Created");
       setLoading(false);
       setLectureTitle("");
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.message);
       setLoading(false);
     }
   };
-  useEffect(()=>{
-    const getCourseLecture= async () => {
+  useEffect(() => {
+    const getCourseLecture = async () => {
       try {
-        const result= await axios.get(serverUrl+`/api/course/courselecture/${courseId}`,{withCredentials:true})
-        console.log(result.data);
-        
-        dispatch(setLectureData(result.data.lectures))
-      } catch (error) {
-        console.log(error);
-      }
-       
-    }
+        const result = await axios.get(
+          serverUrl + `/api/course/courselecture/${courseId}`,
+          { withCredentials: true },
+        );
+
+        dispatch(setLectureData(result.data.lectures));
+      } catch (error) {}
+    };
     getCourseLecture();
-  },[])
+  }, []);
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white shadow-xl rounded-xl w-full max-w-2xl p-6">

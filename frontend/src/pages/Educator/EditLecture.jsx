@@ -1,12 +1,12 @@
-import React ,{ useState } from 'react';
+import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { serverUrl } from "../../App";
 import { setLectureData } from "../../redux/lectureSlice";
 import { toast } from "react-toastify";
-import { ClipLoader } from 'react-spinners';
-import axios from 'axios';
+import { ClipLoader } from "react-spinners";
+import axios from "axios";
 function EditLecture() {
   const { courseId, lectureId } = useParams();
   const navigate = useNavigate();
@@ -21,44 +21,45 @@ function EditLecture() {
   const [isPreviewFree, setIsPreviewFree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
-  const formdata= new FormData()
-  formdata.append("lectureTitle",lectureTitle)
-  formdata.append("videoUrl",videoUrl)
-  formdata.append("isPreviewFree",isPreviewFree)
+  const formdata = new FormData();
+  formdata.append("lectureTitle", lectureTitle);
+  formdata.append("videoUrl", videoUrl);
+  formdata.append("isPreviewFree", isPreviewFree);
 
   const handleEditLecture = async () => {
-    setLoading(true);try {
-        const result= await axios.post(serverUrl+ `/api/course/editlecture/${lectureId}`,formdata,{withCredentials:true})
-        console.log(result.data);
-        dispatch(setLectureData([...lectureData,result.data]))
-        toast.success("Lecture Updated")
-        navigate("/courses")
-        setLoading(false)
+    setLoading(true);
+    try {
+      const result = await axios.post(
+        serverUrl + `/api/course/editlecture/${lectureId}`,
+        formdata,
+        { withCredentials: true },
+      );
+      dispatch(setLectureData([...lectureData, result.data]));
+      toast.success("Lecture Updated");
+      navigate("/courses");
+      setLoading(false);
     } catch (error) {
-        console.log(error);
-        toast.error(error)
-        
+      toast.error(error);
     }
-    
-  }
+  };
 
   const removeLecture = async () => {
     setLoading1(true);
     try {
-        const result = await axios.delete(serverUrl+`/api/course/removelecture/${lectureId}`,{withCredentials:true})
-        console.log(result.data);
-        setLoading1(false)
-        navigate(`/createLecture/${courseId}`)
-        toast.success("Lecture removed")
+      const result = await axios.delete(
+        serverUrl + `/api/course/removelecture/${lectureId}`,
+        { withCredentials: true },
+      );
+      setLoading1(false);
+      navigate(`/createLecture/${courseId}`);
+      toast.success("Lecture removed");
     } catch (error) {
-        setLoading1(false)
-        console.log(error);
-        toast.error(error.response.data.message)
+      setLoading1(false);
+      toast.error(error.response.data.message);
     }
-    
-  }
+  };
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-6 space-y-6">
@@ -77,7 +78,8 @@ function EditLecture() {
         <div>
           <button
             className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all text-sm"
-            onClick={removeLecture} disabled={loading1}
+            onClick={removeLecture}
+            disabled={loading1}
           >
             {loading1 ? (
               <ClipLoader size={30} color="white" />

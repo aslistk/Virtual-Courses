@@ -19,16 +19,12 @@ function Courses() {
   useEffect(() => {
     const creatorCourses = async () => {
       try {
-        const result = await axios.get(
-          serverUrl + "/api/course/getcreator",
-          { withCredentials: true },
-        );
+        const result = await axios.get(serverUrl + "/api/course/getcreator", {
+          withCredentials: true,
+        });
 
         await dispatch(setCreatorCourseData(result.data));
-
-        console.log(result.data);
       } catch (error) {
-        console.log(error);
         toast.error(error.response.data.message);
       }
     };

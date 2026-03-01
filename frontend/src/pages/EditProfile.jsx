@@ -30,14 +30,12 @@ function EditProfile() {
         formData,
         { withCredentials: true },
       );
-      console.log(result.data);
       dispatch(setUserData(result.data));
       navigate("/");
       setLoading(false);
 
       toast.success("Profile Updated Successfully");
     } catch (error) {
-      console.log(error);
       toast.error("Profile Update Error");
       setLoading(false);
     }
@@ -77,7 +75,7 @@ function EditProfile() {
               type="file"
               name="photoUrl"
               placeholder="Photo URL"
-              accept='image/*'
+              accept="image/*"
               className="w-full px-4 py-2 border rounded-md text-sm "
               onChange={(e) => setPhotoUrl(e.target.files[0])}
             />

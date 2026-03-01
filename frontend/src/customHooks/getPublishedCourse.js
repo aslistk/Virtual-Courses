@@ -16,11 +16,8 @@ const getPublishedCourse = () => {
           serverUrl + "/api/course/getpublishedcourses",
           { withCredentials: true },
         );
-        console.log(result.data);
         dispatch(setCourseData(result.data));
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     getCourseData();
   }, []);

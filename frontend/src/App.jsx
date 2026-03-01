@@ -1,35 +1,40 @@
-import React from 'react'
-import { Routes,Route, Navigate } from 'react-router-dom'
-import Home from './pages/home'
-import SignUp from './pages/SignUp'
-import Login from './pages/Login'
-import Profile from './pages/Profile'
-import { ToastContainer } from 'react-toastify'
-import getCurrentUser from './customHooks/getCurrentUser'
-import { useSelector } from 'react-redux'
-import ForgotPassword from './pages/ForgotPassword'
-import EditProfile from './pages/EditProfile'
-import Dashboard from './pages/Educator/Dashboard'
-import Courses from './pages/Educator/Courses'
-import CreateCourses from './pages/Educator/CreateCourses'
-import getCreatorCourse from './customHooks/getCreatorCourse'
-import EditCourse from './pages/Educator/EditCourse'
-import getPublishedCourse from './customHooks/getPublishedCourse'
-import AllCourses from './pages/AllCourses'
-import CreateLecture from './pages/Educator/CreateLecture'
-import EditLecture from './pages/Educator/EditLecture'
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/home";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import { ToastContainer } from "react-toastify";
+import getCurrentUser from "./customHooks/getCurrentUser";
+import { useSelector } from "react-redux";
+import ForgotPassword from "./pages/ForgotPassword";
+import EditProfile from "./pages/EditProfile";
+import Dashboard from "./pages/Educator/Dashboard";
+import Courses from "./pages/Educator/Courses";
+import CreateCourses from "./pages/Educator/CreateCourses";
+import getCreatorCourse from "./customHooks/getCreatorCourse";
+import EditCourse from "./pages/Educator/EditCourse";
+import getPublishedCourse from "./customHooks/getPublishedCourse";
+import AllCourses from "./pages/AllCourses";
+import CreateLecture from "./pages/Educator/CreateLecture";
+import EditLecture from "./pages/Educator/EditLecture";
 import ViewCourse from "./pages/ViewCourse";
-import ScrollToTop from './components/ScrollToTop'
-export const serverUrl="http://localhost:8000"
+import ScrollToTop from "./components/ScrollToTop";
+import ViewLectures from "./pages/ViewLectures";
+import MyEnrolledCourses from "./pages/MyEnrolledCourses";
+import getAllReviews from "./customHooks/getAllReviews";
+import SearchWithAi from "./pages/SearchWithAi";
+export const serverUrl = "http://localhost:8000";
 function App() {
-  getCurrentUser()
+  getCurrentUser();
   getCreatorCourse();
   getPublishedCourse();
-  const {userData}= useSelector(state=>state.user)
+  getAllReviews();
+  const { userData } = useSelector((state) => state.user);
   return (
     <>
       <ToastContainer />
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -111,18 +116,30 @@ function App() {
           }
         />
         <Route
-          path="/viewcourse/:courseId/"
+          path="/viewcourse/:courseId"
+          element={userData ? <ViewCourse /> : <Navigate to={"/signup"} />}
+        />
+        <Route
+          path="/viewlecture/:courseId"
+          element={userData ? <ViewLectures /> : <Navigate to={"/signup"} />}
+        />
+        <Route
+          path="/mycourses"
           element={
-            userData?.role === "educator" ? (
-              <ViewCourse />
-            ) : (
-              <Navigate to={"/signup"} />
-            )
+            userData ? <MyEnrolledCourses /> : <Navigate to={"/signup"} />
           }
+        />
+        <Route
+          path="/editprofile"
+          element={userData ? <EditProfile /> : <Navigate to={"/signup"} />}
+        />
+        <Route
+          path="/search"
+          element={userData ? <SearchWithAi/> : <Navigate to={"/signup"} />}
         />
       </Routes>
     </>
   );
 }
 
-export default App
+export default App;

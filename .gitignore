@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 venv/
+*.pem
 
 # Environment
 .env
@@ -11,11 +12,13 @@ venv/
 dist/
 build/
 .next/
+.vite
 
 # IDE
 .vscode/
 .idea/
 *.swp
+*.swo
 
 # OS
 .DS_Store
@@ -23,6 +26,13 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
 
+# Testing
+coverage/
+.nyc_output/
 
-.vscode
+# Temporary
+tmp/
+temp/
+.cache/

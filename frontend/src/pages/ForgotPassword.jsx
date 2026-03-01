@@ -1,72 +1,69 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import axios from "axios"
+import axios from "axios";
 import { serverUrl } from "../App";
 
 function ForgotPassword() {
-    const navigate = useNavigate();
-    const [step,setStep]=useState(1);
-    const [email, setEmail] = useState("");
-    const [otp, setOtp] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [newpassword, setNewPassword] = useState("");
-    const [conPassword, setConpassword] = useState("");
-     const sendOtp = async () => {
-    setLoading(true)
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [newpassword, setNewPassword] = useState("");
+  const [conPassword, setConpassword] = useState("");
+  const sendOtp = async () => {
+    setLoading(true);
     try {
-      const result = await axios.post(`${serverUrl}/api/auth/sendotp` , {email} , {withCredentials:true})
-      console.log(result)
-      setStep(2)
-      toast.success(result.data.message)
-      setLoading(false)
-      
+      const result = await axios.post(
+        `${serverUrl}/api/auth/sendotp`,
+        { email },
+        { withCredentials: true },
+      );
+      setStep(2);
+      toast.success(result.data.message);
+      setLoading(false);
     } catch (error) {
-      console.log(error)
-      toast.error(error.response.data.message)
-      setLoading(false)
-    }}
-    const verifyOTP = async () => {
-      setLoading(true);
-      try {
-        const result = await axios.post(
-          `${serverUrl}/api/auth/verifyotp`,
-          { email, otp },
-          { withCredentials: true },
-        );
-        console.log(result.data);
-
-        toast.success(result.data.message);
-        setLoading(false);
-        setStep(3);
-      } catch (error) {
-        console.log(error);
-        toast.error(error.response.data.message);
-        setLoading(false);
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  };
+  const verifyOTP = async () => {
+    setLoading(true);
+    try {
+      const result = await axios.post(
+        `${serverUrl}/api/auth/verifyotp`,
+        { email, otp },
+        { withCredentials: true },
+      );
+      toast.success(result.data.message);
+      setLoading(false);
+      setStep(3);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  };
+  const resetPassword = async () => {
+    setLoading(true);
+    try {
+      if (newpassword !== conPassword) {
+        return toast.error("Password does not match");
       }
-    };
-    const resetPassword = async () => {
-      setLoading(true);
-      try {
-        if (newpassword !== conPassword) {
-          return toast.error("Password does not match");
-        }
-        const result = await axios.post(
-          `${serverUrl}/api/auth/resetpassword`,
-          { email, password: newpassword },
-          { withCredentials: true },
-        );
-        console.log(result.data);
-        toast.success(result.data.message);
-        setLoading(false);
-        navigate("/login");
-      } catch (error) {
-        console.log(error);
-        toast.error(error.response.data.message);
-        setLoading(false);
-      }
-    };
+      const result = await axios.post(
+        `${serverUrl}/api/auth/resetpassword`,
+        { email, password: newpassword },
+        { withCredentials: true },
+      );
+      toast.success(result.data.message);
+      setLoading(false);
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       {/* step 1 */}
@@ -208,9 +205,15 @@ function ForgotPassword() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[black] hover:bg-[#4b4b4b] text-white py-2 rounded-md font-medium" onClick={resetPassword} disabled={loading}
+              className="w-full bg-[black] hover:bg-[#4b4b4b] text-white py-2 rounded-md font-medium"
+              onClick={resetPassword}
+              disabled={loading}
             >
-              {loading? <ClipLoader size={30} color="white" />:"Reset Password"}
+              {loading ? (
+                <ClipLoader size={30} color="white" />
+              ) : (
+                "Reset Password"
+              )}
             </button>
           </form>
 
@@ -227,4 +230,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword
+export default ForgotPassword;

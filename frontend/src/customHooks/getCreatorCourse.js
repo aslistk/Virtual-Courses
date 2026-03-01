@@ -10,17 +10,15 @@ const getCreatorCourse = () => {
   const { userData } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (userData?.role !== "educator") return; // ✅ stop bad calls
+    if (userData?.role !== "educator") return;
 
     const creatorCourses = async () => {
       try {
         const result = await axios.get(`${serverUrl}/api/course/getcreator`, {
           withCredentials: true,
         });
-
         dispatch(setCreatorCourseData(result.data));
       } catch (error) {
-        console.log(error);
         toast.error(error?.response?.data?.message || "Unauthorized");
       }
     };

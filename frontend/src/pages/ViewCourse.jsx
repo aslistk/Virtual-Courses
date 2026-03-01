@@ -1,4 +1,3 @@
-
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,6 +10,7 @@ import { serverUrl } from "../App";
 import Card from "../components/Card.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function ViewCourse() {
   const navigate = useNavigate();
@@ -21,25 +21,28 @@ function ViewCourse() {
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [creatorData, setCreatorData] = useState(null);
   const [creatorCourses, setCreatorCourses] = useState(null);
-  const userData=useSelector(state=>state.user)
+  const { userData } = useSelector((state) => state.user);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
   const fetchCourseData = async () => {
     courseData.map((course) => {
       if (course._id === courseId) {
         dispatch(setSelectedCourse(course));
-        console.log(selectedCourse);
         return null;
       }
     });
   };
-  useEffect(()=>{
-    if(creatorData?._id &&courseData.length>0){
-        const creatorCourse=courseData.filter((course)=>
-            course.creator===creatorData?._id && course._id!=courseId
-        )
-        setCreatorCourses(creatorCourse);
+  useEffect(() => {
+    if (creatorData?._id && courseData.length > 0) {
+      const creatorCourse = courseData.filter(
+        (course) =>
+          course.creator === creatorData?._id && course._id != courseId,
+      );
+      setCreatorCourses(creatorCourse);
     }
-    
-  },[creatorData,courseData])
+  }, [creatorData, courseData]);
   useEffect(() => {
     const handleCreator = async () => {
       if (selectedCourse?.creator) {
@@ -49,50 +52,116 @@ function ViewCourse() {
             { userId: selectedCourse?.creator },
             { withCredentials: true },
           );
-          console.log(result.data);
           setCreatorData(result.data);
         } catch (error) {
-          console.log(error);
+          toast.error(
+            error.response?.data?.message || "Failed to load creator",
+          );
         }
       }
     };
     handleCreator();
   }, [selectedCourse]);
+
+  const checkEnrollment = () => {
+    const inUserCourses = userData?.enrolledCourses?.some(
+      (c) =>
+        (typeof c === "string" ? c : c._id).toString() === courseId?.toString(),
+    );
+    const inCourseStudents = selectedCourse?.enrolledStudents?.some(
+      (id) => id.toString() === userData?._id?.toString(),
+    );
+    if (inUserCourses && inCourseStudents) {
+      setIsEnrolled(true);
+    } else {
+      setIsEnrolled(false);
+    }
+  };
+
   useEffect(() => {
     fetchCourseData();
-  }, [courseData, courseId]);
+    checkEnrollment();
+  }, [courseData, courseId, userData, selectedCourse]);
 
-  const handleEnroll=async (userId,courseId) => {
+  const handleEnroll = async (courseId, userId) => {
     try {
-        const orderData =await axios.post(serverUrl+"/api/order/razorpay-order",{userId,courseId},{withCredentials:true})
-        console.log(orderData);
-        
-        const options={
-            key:import.meta.env.VITE_RAZORPAY_KEY_ID,
-            amount:orderData.data.amount,
-            currency:"INR",
-            name:"VIRTUAL COURSES",
-            description:"COURSE ENROLLMENT PAYMENT",
-            order_id:orderData.data.id,
-            handler: async function (response) {
-                console.log("RazorPay Response",response);
-                 try {
-                    const verifyPayment=await axios.post(serverUrl+"/api/order/verifypayment",{...response,courseId,userId},{withCredentials:true})
-                    toast.success(verifyPayment.data.message
-                    )
-                 } catch (error) {
-                    toast.error(error.response.data.message)
-                 }
-            }
-           
-        }
-        const rzp= new window.Razorpay(options).open()
+      // Load Razorpay script on demand only when user initiates payment
+      if (!window.Razorpay) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://checkout.razorpay.com/v1/checkout.js";
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+      }
+
+      const orderData = await axios.post(
+        serverUrl + "/api/order/razorpay-order",
+        { userId, courseId },
+        { withCredentials: true },
+      );
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: orderData.data.amount,
+        currency: "INR",
+        name: "VIRTUAL COURSES",
+        description: "COURSE ENROLLMENT PAYMENT",
+        order_id: orderData.data.id,
+        handler: async function (response) {
+          try {
+            const verifyPayment = await axios.post(
+              serverUrl + "/api/order/verifypayment",
+              { ...response, courseId, userId },
+              { withCredentials: true },
+            );
+            setIsEnrolled(true);
+            toast.success(verifyPayment.data.message);
+          } catch (error) {
+            toast.error(error.response.data.message);
+          }
+        },
+      };
+      const rzp = new window.Razorpay(options).open();
     } catch (error) {
-        console.log(error);
-        toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-    
-  }
+  };
+
+  const handleReview = async () => {
+    setLoading(true);
+    try {
+      const result = await axios.post(
+        serverUrl + "/api/review/createreview",
+        { courseId, rating, comment },
+        { withCredentials: true },
+      );
+      setLoading(false);
+      toast.success("Review submitted successfully");
+      setRating(0);
+      setComment("");
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.response.data.message);
+      setRating(0);
+      setComment("");
+    }
+  };
+
+  const calculateAvgReview = (reviews) => {
+    if (!reviews || reviews.length === 0) {
+      return 0;
+    }
+    const total = reviews.reduce(
+      (sum, review) => sum + (review?.rating || 0),
+      0,
+    );
+    return (total / reviews.length).toFixed(1);
+  };
+
+  const avgRating = calculateAvgReview(selectedCourse?.reviews);
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-xl p-6 space-y-6 relative">
@@ -124,7 +193,7 @@ function ViewCourse() {
             {/* Rating & Price */}
             <div className="flex items-start flex-col justify-between">
               <div className="text-yellow-500 font-medium flex gap-2">
-                ⭐5
+                ⭐{avgRating}
                 <span className="text-gray-500"> (1,200 reviews)</span>
               </div>
               <div>
@@ -140,9 +209,22 @@ function ViewCourse() {
               <li>✅ 10+ hours of video content</li>
               <li>✅ Lifetime access to course materials</li>
             </ul>
-            <button className="bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3 cursor-pointer" onClick={()=>handleEnroll(userData._id,courseId)}>
-              Enroll Now
-            </button>
+            {/* Enroll Button */}
+            {!isEnrolled ? (
+              <button
+                className="bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3"
+                onClick={() => handleEnroll(courseId, userData._id)}
+              >
+                Enroll Now
+              </button>
+            ) : (
+              <button
+                className="bg-green-200 text-green-600 px-6 py-2 rounded hover:bg-gray-700 hover:border mt-3"
+                onClick={() => navigate(`/viewlecture/${courseId}`)}
+              >
+                Watch Now
+              </button>
+            )}
           </div>
         </div>
         <div>
@@ -234,16 +316,32 @@ function ViewCourse() {
           <div className="mb-4">
             <div className="flex gap-1 mb-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                <FaStar key={star} className={"fill-gray-300"} />
+                <FaStar
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={
+                    rating >= star ? "fill-yellow-400" : "fill-gray-300"
+                  }
+                />
               ))}
             </div>
             <textarea
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
               placeholder="Write your comment here..."
               className="w-full border border-gray-300 rounded-lg p-2"
               rows="3"
             />
-            <button className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800">
-              Submit Review
+            <button
+              className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+              onClick={handleReview}
+              disabled={loading}
+            >
+              {loading ? (
+                <ClipLoader size={30} color="white" />
+              ) : (
+                "Submit Review"
+              )}
             </button>
           </div>
           <div className="flex items-center gap-4 pt-4 border-t -mb-3.5">
@@ -283,6 +381,7 @@ function ViewCourse() {
                   id={item._id}
                   price={item.price}
                   category={item.category}
+                  reviews={item.reviews}
                 />
               ))}
             </div>

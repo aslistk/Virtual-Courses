@@ -15,6 +15,7 @@ import {
   removeLecture,
 } from "../controller/courseController.js";
 import upload from "../middleware/multer.js";
+import { searchWithAi } from "../controller/searchController.js";
 
 let courseRouter = express.Router();
 
@@ -35,4 +36,8 @@ courseRouter.get("/courselecture/:courseId", isAuth, getCourseLecture);
 courseRouter.post("/editlecture/:lectureId", isAuth,upload.single("videoUrl"), editLecture);
 courseRouter.delete("/removelecture/:lectureId", isAuth, removeLecture);
 courseRouter.post("/creator", isAuth, getCreatorById);
+
+
+//for search
+courseRouter.post("/search", searchWithAi);
 export default courseRouter;

@@ -11,14 +11,14 @@ import { ClipLoader } from "react-spinners";
 import { setCourseData } from "../../redux/courseSlice";
 
 function EditCourse() {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const { courseId } = useParams();
   const thumb = useRef();
-   const [selectedCourse, setSelectedCourse] = useState(null);
-   const [title, setTitle] = useState("");
-   const [subTitle, setSubTitle] = useState("");
-   const [description, setDescription] = useState("");
-   const [category, setCategory] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
   const [isPublished, setIsPublished] = useState(false);
   const [level, setLevel] = useState("");
   const [price, setPrice] = useState("");
@@ -35,23 +35,20 @@ function EditCourse() {
         { withCredentials: true },
       );
       setSelectedCourse(result.data);
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
-   useEffect(() => {
-     if (selectedCourse) {
-       setTitle(selectedCourse.title || "");
-       setSubTitle(selectedCourse.subTitle || "");
-       setDescription(selectedCourse.description || "");
-       setCategory(selectedCourse.category || "");
-       setLevel(selectedCourse.level || "");
-       setPrice(selectedCourse.price || "");
-       setFrontendImage(selectedCourse.thumbnail || img);
-       setIsPublished(selectedCourse?.isPublished);
-     }
-   }, [selectedCourse]);
+  useEffect(() => {
+    if (selectedCourse) {
+      setTitle(selectedCourse.title || "");
+      setSubTitle(selectedCourse.subTitle || "");
+      setDescription(selectedCourse.description || "");
+      setCategory(selectedCourse.category || "");
+      setLevel(selectedCourse.level || "");
+      setPrice(selectedCourse.price || "");
+      setFrontendImage(selectedCourse.thumbnail || img);
+      setIsPublished(selectedCourse?.isPublished);
+    }
+  }, [selectedCourse]);
   useEffect(() => {
     getCourseById();
   }, []);
@@ -96,7 +93,6 @@ function EditCourse() {
       navigate("/courses");
       toast.success("Course Updated");
     } catch (error) {
-      console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
@@ -112,11 +108,9 @@ function EditCourse() {
       toast.success("Course Deleted");
       const filteredCourses = courseData.filter((c) => c._id !== courseId);
       dispatch(setCourseData(filteredCourses));
-      console.log(result);
       navigate("/courses");
       setLoading1(false);
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.message);
       setLoading1(false);
     }
@@ -135,7 +129,7 @@ function EditCourse() {
         <div className="space-x-2 space-y-2 ">
           <button
             className="bg-black text-white px-4 py-2 rounded-md"
-            onClick={()=>navigate(`/createlecture/${selectedCourse?._id}`)}
+            onClick={() => navigate(`/createlecture/${selectedCourse?._id}`)}
           >
             Go to lectures page
           </button>

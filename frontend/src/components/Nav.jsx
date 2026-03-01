@@ -22,12 +22,9 @@ function Nav() {
       const result = await axios.get(serverUrl + "/api/auth/logout", {
         withCredentials: true,
       });
-      console.log(result.data);
       await dispatch(setUserData(null));
       toast.success("LogOut Successfully");
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
+    } catch (error) {}
   };
   return (
     <div>
@@ -102,7 +99,7 @@ function Nav() {
             </span>
             <span
               className="bg-[black] text-white hover:bg-gray-600  px-[25px] py-[10px] rounded-2xl"
-             
+              onClick={() => navigate("/mycourses")}
             >
               My Courses
             </span>
@@ -149,6 +146,7 @@ function Nav() {
         </span>
         <span
           className="flex items-center justify-center gap-2  text-white border-[2px] border-[#fdfbfb7a] bg-[#000000d5] rounded-lg px-[65px] py-[20px] text-[18px] "
+          onClick={() => navigate("/mycourses")}
         >
           My Courses
         </span>

@@ -8,6 +8,9 @@ import Logos from "../components/Logos";
 import ExploreCourses from "../components/ExploreCourses";
 import CardPage from "../components/CardPage";
 import { useNavigate } from "react-router-dom";
+import About from "../components/About";
+import Footer from "../components/Footer";
+import ReviewPage from "../components/ReviewPage";
 function Home() {
   const navigate=useNavigate();
   return (
@@ -30,7 +33,7 @@ function Home() {
             View all Courses
             <SiViaplay className="w-[30px] h-[30px] lg:fill-white fill-black" />
           </button>
-          <button className="px-[20px] py-[10px] lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer items-center justify-center">
+          <button className="px-[20px] py-[10px] lg:bg-white bg-black lg:text-black text-white rounded-[10px] text-[18px] font-light flex gap-2 cursor-pointer items-center justify-center" onClick={()=>navigate("/search")}>
             Search with AI
             <img
               src={ai}
@@ -48,6 +51,9 @@ function Home() {
       <Logos />
       <ExploreCourses/>
       <CardPage/> 
+      <About/>
+      <ReviewPage/>
+      <Footer/>
     </div>
   );
 }

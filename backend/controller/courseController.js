@@ -29,7 +29,9 @@ export const createCourse = async (req, res) => {
 
 export const getPublishedCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true }).populate("lectures");
+    const courses = await Course.find({ isPublished: true }).populate(
+      "lectures reviews",
+    );
     if (!courses) {
       return res.status(404).json({ message: "Course not found" });
     }
@@ -77,16 +79,16 @@ export const editCourse = async (req, res) => {
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    const updateData = {
-      title,
-      subTitle,
-      description,
-      category,
-      level,
-      price,
-      isPublished,
-      thumbnail,
-    };
+    const updateData = {};
+    if (title) updateData.title = title;
+    if (subTitle) updateData.subTitle = subTitle;
+    if (description) updateData.description = description;
+    if (category) updateData.category = category;
+    if (level && ["Beginner", "Intermediate", "Advanced"].includes(level))
+      updateData.level = level;
+    if (price) updateData.price = price;
+    if (isPublished !== undefined) updateData.isPublished = isPublished;
+    if (thumbnail) updateData.thumbnail = thumbnail;
 
     course = await Course.findByIdAndUpdate(courseId, updateData, {
       new: true,
@@ -121,10 +123,10 @@ export const removeCourse = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    await course.findByIdAndDelete(courseId,{new:true});
+    await Course.findByIdAndDelete(courseId);
     return res.status(200).json({ message: "Course Removed Successfully" });
   } catch (error) {
-    console.error(error);
+    console.error("Remove course error:", error);
     return res
       .status(500)
       .json({ message: `Failed to remove course ${error}` });
@@ -133,73 +135,70 @@ export const removeCourse = async (req, res) => {
 
 // for lecture
 
-export const createLecture=async(req,res) => {
+export const createLecture = async (req, res) => {
   try {
-    const {lectureTitle}=req.body
-    const {courseId} =req.params
-    if(!lectureTitle||!courseId){
-      return res.status(400).json({message:"Lecture title is required"})
+    const { lectureTitle } = req.body;
+    const { courseId } = req.params;
+    if (!lectureTitle || !courseId) {
+      return res.status(400).json({ message: "Lecture title is required" });
     }
-    const lecture= await Lecture.create({lectureTitle})
-    const course = await Course.findById(courseId)
-    if(course){
+    const lecture = await Lecture.create({ lectureTitle });
+    const course = await Course.findById(courseId);
+    if (course) {
       course.lectures.push(lecture._id);
     }
-    await course.populate("lectures")
+    await course.populate("lectures");
     await course.save();
-    return res.status(200).json({lecture,course})
+    return res.status(200).json({ lecture, course });
   } catch (error) {
     return res
       .status(500)
       .json({ message: `Failed to Create Lecture ${error}` });
   }
-}
+};
 
-export const getCourseLecture= async (req,res) => {
+export const getCourseLecture = async (req, res) => {
   try {
-    const {courseId}=req.params
-    const course=await Course.findById(courseId)
-      if(!course){
-        return res.status(404).json({message:"Course not found"})
-      }
-      await course.populate("lectures")
-      await course.save()
-      return res.status(200).json(course)
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
     }
-    catch (error) {
+    await course.populate("lectures");
+    await course.save();
+    return res.status(200).json(course);
+  } catch (error) {
     return res.status(500).json({ message: `Failed to get Lectures ${error}` });
   }
-  
-}
+};
 
-export const editLecture=async (req,res) => {
+export const editLecture = async (req, res) => {
   try {
-    const {lectureId}=req.params
-    const {isPreviewFree,lectureTitle}=req.body
-    const lecture=await Lecture.findById(lectureId)
-    if(!lecture){
-       return res.status(404).json({ message: "Lecture not found" });
+    const { lectureId } = req.params;
+    const { isPreviewFree, lectureTitle } = req.body;
+    const lecture = await Lecture.findById(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
     }
-    let videoUrl
-    if(req.file){
-      videoUrl=await uploadOnCloudinary(req.file.path)
-      lecture.videoUrl=videoUrl
+    let videoUrl;
+    if (req.file) {
+      videoUrl = await uploadOnCloudinary(req.file.path);
+      lecture.videoUrl = videoUrl;
     }
     if (lectureTitle) {
-      lecture.lectureTitle= lectureTitle
+      lecture.lectureTitle = lectureTitle;
     }
-    lecture.isPreviewFree=isPreviewFree
-    await lecture.save()
-    return res.status(200).json(lecture)
+    lecture.isPreviewFree = isPreviewFree;
+    await lecture.save();
+    return res.status(200).json(lecture);
   } catch (error) {
     return res
       .status(500)
       .json({ message: `Failed to edit Lectures ${error}` });
   }
-  
-}
+};
 
-export const removeLecture = async (req,res) => {
+export const removeLecture = async (req, res) => {
   try {
     const { lectureId } = req.params;
     const lecture = await Lecture.findByIdAndDelete(lectureId);
@@ -218,21 +217,17 @@ export const removeLecture = async (req,res) => {
       .status(500)
       .json({ message: `Failed to remove Lectures ${error}` });
   }
-  
-}
+};
 
-export const getCreatorById=async (req,res) => {
+export const getCreatorById = async (req, res) => {
   try {
-    const {userId}=req.body
-    const user = await User.findById(userId).select("-password")
-    if(!user){
-      return res.status(400).json({message:"User not found"})
+    const { userId } = req.body;
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
     }
     return res.status(200).json(user);
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: `Failed to get creator ${error}` });
+    return res.status(500).json({ message: `Failed to get creator ${error}` });
   }
-  
-}
+};

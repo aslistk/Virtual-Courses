@@ -19,13 +19,11 @@ const CreateCourse = () => {
         { title, category },
         { withCredentials: true },
       );
-      console.log(result.data);
       toast.success("Course Created");
       navigate("/courses");
       setTitle("");
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
       toast.error(error.response.data.message);
     }
