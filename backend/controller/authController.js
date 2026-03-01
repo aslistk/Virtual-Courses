@@ -4,12 +4,14 @@ import bcrypt from "bcryptjs";
 import genToken from "../config/token.js";
 import sendMail from "../config/sendMail.js";
 
-const isProduction = process.env.NODE_ENV === "production";
-const cookieOptions = {
-  httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? "none" : "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === "production";
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  };
 };
 
 export const signUp = async (req, res) => {
@@ -35,7 +37,7 @@ export const signUp = async (req, res) => {
       role,
     });
     let token = await genToken(user._id);
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, getCookieOptions());
     return res.status(201).json(user);
   } catch (error) {
     return res.status(500).json({ message: `SignUp error ${error}` });
@@ -54,7 +56,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Incorrect Password" });
     }
     let token = await genToken(user._id);
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, getCookieOptions());
     return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ message: `Login error ${error}` });
@@ -63,11 +65,8 @@ export const login = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-    });
+    const { httpOnly, secure, sameSite } = getCookieOptions();
+    res.clearCookie("token", { httpOnly, secure, sameSite });
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     return res.status(500).json({ message: `Logout error ${error}` });
@@ -145,7 +144,7 @@ export const googleSignup = async (req, res) => {
       role,
     });
     let token = await genToken(user._id);
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, getCookieOptions());
     return res.status(201).json(user);
   } catch (error) {
     console.error("googleSignup error:", error);
@@ -163,7 +162,7 @@ export const googleLogin = async (req, res) => {
         .json({ message: "User not found. Please sign up first." });
     }
     let token = await genToken(user._id);
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, getCookieOptions());
     return res.status(200).json(user);
   } catch (error) {
     console.error("googleLogin error:", error);

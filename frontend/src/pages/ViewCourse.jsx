@@ -35,10 +35,11 @@ function ViewCourse() {
     });
   };
   useEffect(() => {
-    if (creatorData?._id && courseData.length > 0) {
+    if (creatorData?._id && courseData?.length > 0) {
       const creatorCourse = courseData.filter(
         (course) =>
-          course.creator === creatorData?._id && course._id != courseId,
+          course.creator?.toString() === creatorData._id?.toString() &&
+          course._id?.toString() !== courseId?.toString(),
       );
       setCreatorCourses(creatorCourse);
     }
