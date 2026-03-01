@@ -128,16 +128,44 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-export const googleAuth = async (req, res) => {
+export const googleSignup = async (req, res) => {
   try {
     const { name, email, role } = req.body;
     let user = await User.findOne({ email });
+    if (user) {
+      return res
+        .status(400)
+        .json({
+          message: "Email is already registered. Please login instead.",
+        });
+    }
+    user = await User.create({
+      name,
+      email,
+      role,
+    });
+    let token = await genToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return res.status(201).json(user);
+  } catch (error) {
+    console.error("googleSignup error:", error);
+    return res.status(500).json({ message: `googleSignup error ${error}` });
+  }
+};
+
+export const googleLogin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({
-        name,
-        email,
-        role,
-      });
+      return res
+        .status(404)
+        .json({ message: "User not found. Please sign up first." });
     }
     let token = await genToken(user._id);
     res.cookie("token", token, {
@@ -148,7 +176,7 @@ export const googleAuth = async (req, res) => {
     });
     return res.status(200).json(user);
   } catch (error) {
-    console.error("googleAuth error:", error);
-    return res.status(500).json({ message: `googleAuth  ${error}` });
+    console.error("googleLogin error:", error);
+    return res.status(500).json({ message: `googleLogin error ${error}` });
   }
 };

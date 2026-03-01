@@ -51,7 +51,7 @@ function SignUp() {
       let email = user.email;
 
       const result = await axios.post(
-        serverUrl + "/api/auth/googleauth",
+        serverUrl + "/api/auth/googlesignup",
         { name, email, role },
         { withCredentials: true },
       );
@@ -59,7 +59,11 @@ function SignUp() {
       navigate("/");
       toast.success("SignUp Successfully");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong",
+      );
     }
   };
   return (

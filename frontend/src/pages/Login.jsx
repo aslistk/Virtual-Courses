@@ -53,15 +53,19 @@ function Login() {
       let role = "";
 
       const result = await axios.post(
-        serverUrl + "/api/auth/googleauth",
-        { name, email, role },
+        serverUrl + "/api/auth/googlelogin",
+        { email },
         { withCredentials: true },
       );
       dispatch(setUserData(result.data));
       navigate("/");
       toast.success("Logged in Successfully");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong",
+      );
     }
   };
   return (
