@@ -4,6 +4,14 @@ import bcrypt from "bcryptjs";
 import genToken from "../config/token.js";
 import sendMail from "../config/sendMail.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+};
+
 export const signUp = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -27,12 +35,7 @@ export const signUp = async (req, res) => {
       role,
     });
     let token = await genToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
     return res.status(201).json(user);
   } catch (error) {
     return res.status(500).json({ message: `SignUp error ${error}` });
@@ -51,12 +54,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Incorrect Password" });
     }
     let token = await genToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
     return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ message: `Login error ${error}` });
@@ -67,8 +65,8 @@ export const logOut = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
@@ -147,12 +145,7 @@ export const googleSignup = async (req, res) => {
       role,
     });
     let token = await genToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
     return res.status(201).json(user);
   } catch (error) {
     console.error("googleSignup error:", error);
@@ -170,12 +163,7 @@ export const googleLogin = async (req, res) => {
         .json({ message: "User not found. Please sign up first." });
     }
     let token = await genToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, cookieOptions);
     return res.status(200).json(user);
   } catch (error) {
     console.error("googleLogin error:", error);
