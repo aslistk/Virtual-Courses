@@ -22,9 +22,12 @@ function Nav() {
       const result = await axios.get(serverUrl + "/api/auth/logout", {
         withCredentials: true,
       });
-      await dispatch(setUserData(null));
+      dispatch(setUserData(null));
       toast.success("LogOut Successfully");
-    } catch (error) {}
+      navigate("/");
+    } catch (error) {
+      toast.error("Logout failed");
+    }
   };
   return (
     <div>

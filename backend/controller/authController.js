@@ -65,7 +65,11 @@ export const login = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    await res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     return res.status(500).json({ message: `Logout error ${error}` });
@@ -133,11 +137,9 @@ export const googleSignup = async (req, res) => {
     const { name, email, role } = req.body;
     let user = await User.findOne({ email });
     if (user) {
-      return res
-        .status(400)
-        .json({
-          message: "Email is already registered. Please login instead.",
-        });
+      return res.status(400).json({
+        message: "Email is already registered. Please login instead.",
+      });
     }
     user = await User.create({
       name,
