@@ -24,7 +24,7 @@ import ViewLectures from "./pages/ViewLectures";
 import MyEnrolledCourses from "./pages/MyEnrolledCourses";
 import getAllReviews from "./customHooks/getAllReviews";
 import SearchWithAi from "./pages/SearchWithAi";
-export const serverUrl = "https://virtual-courses-7jev.onrender.com";
+export const serverUrl = import.meta.env.VITE_SERVER_URL;
 function App() {
   getCurrentUser();
   getCreatorCourse();
@@ -41,14 +41,17 @@ function App() {
           path="/signup"
           element={!userData ? <SignUp /> : <Navigate to={"/"} />}
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={!userData ? <Login /> : <Navigate to={"/"} />}
+        />
         <Route
           path="/profile"
           element={userData ? <Profile /> : <Navigate to={"/signup"} />}
         />
         <Route
           path="/forget"
-          element={userData ? <ForgotPassword /> : <Navigate to={"/signup"} />}
+          element={!userData ? <ForgotPassword /> : <Navigate to={"/"} />}
         />
         <Route
           path="/allcourses"
@@ -61,7 +64,7 @@ function App() {
             userData?.role === "educator" ? (
               <Dashboard />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -71,7 +74,7 @@ function App() {
             userData?.role === "educator" ? (
               <Courses />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -81,7 +84,7 @@ function App() {
             userData?.role === "educator" ? (
               <CreateCourses />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -91,7 +94,7 @@ function App() {
             userData?.role === "educator" ? (
               <EditCourse />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -101,7 +104,7 @@ function App() {
             userData?.role === "educator" ? (
               <CreateLecture />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -111,7 +114,7 @@ function App() {
             userData?.role === "educator" ? (
               <EditLecture />
             ) : (
-              <Navigate to={"/signup"} />
+              <Navigate to={userData ? "/" : "/signup"} />
             )
           }
         />
@@ -135,7 +138,7 @@ function App() {
         />
         <Route
           path="/search"
-          element={userData ? <SearchWithAi/> : <Navigate to={"/signup"} />}
+          element={userData ? <SearchWithAi /> : <Navigate to={"/signup"} />}
         />
       </Routes>
     </>

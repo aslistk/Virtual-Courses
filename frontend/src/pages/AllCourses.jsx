@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card.jsx";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Nav from "../components/nav";
+import Nav from "../components/Nav";
 import ai from "../assets/SearchAi.png";
 import { useSelector } from "react-redux";
 function AllCourses() {
@@ -24,9 +24,7 @@ function AllCourses() {
     let courseCopy = courseData.slice();
 
     if (category.length > 0) {
-      courseCopy = courseCopy.filter((c) =>
-        category.includes(c.category),
-      );
+      courseCopy = courseCopy.filter((c) => category.includes(c.category));
     }
 
     setFilterCourses(courseCopy);
