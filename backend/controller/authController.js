@@ -24,10 +24,14 @@ export const signUp = async (req, res) => {
         .json({ message: "Email is already registered with another account" });
     }
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ message: "Enter valid email" });
+      return res
+        .status(400)
+        .json({ message: "Please enter a valid email address." });
     }
     if (password.length < 8) {
-      return res.status(400).json({ message: "Enter strong password" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long." });
     }
     let hashPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
@@ -40,7 +44,9 @@ export const signUp = async (req, res) => {
     res.cookie("token", token, getCookieOptions());
     return res.status(201).json(user);
   } catch (error) {
-    return res.status(500).json({ message: `SignUp error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -53,13 +59,15 @@ export const login = async (req, res) => {
     }
     let isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Incorrect Password" });
+      return res.status(400).json({ message: "Incorrect password." });
     }
     let token = await genToken(user._id);
     res.cookie("token", token, getCookieOptions());
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ message: `Login error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -69,7 +77,9 @@ export const logOut = async (req, res) => {
     res.clearCookie("token", { httpOnly, secure, sameSite });
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    return res.status(500).json({ message: `Logout error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -88,9 +98,11 @@ export const sendOtp = async (req, res) => {
 
     await user.save();
     await sendMail(email, otp);
-    return res.status(200).json({ message: "Email sent successfully " });
+    return res.status(200).json({ message: "OTP sent to your email." });
   } catch (error) {
-    return res.status(500).json({ message: `Send otp error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -105,9 +117,11 @@ export const verifyOtp = async (req, res) => {
     user.resetOtp = undefined;
     user.otpExpires = undefined;
     await user.save();
-    return res.status(200).json({ message: "OTP verified successfully " });
+    return res.status(200).json({ message: "OTP verified successfully." });
   } catch (error) {
-    return res.status(500).json({ message: `Verify otp error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -123,9 +137,11 @@ export const resetPassword = async (req, res) => {
     user.password = hashPassword;
     user.isOtpVerified = false;
     await user.save();
-    return res.status(200).json({ message: "Password Reset Successfully" });
+    return res.status(200).json({ message: "Password reset successfully." });
   } catch (error) {
-    return res.status(500).json({ message: `Reset Password error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -148,7 +164,9 @@ export const googleSignup = async (req, res) => {
     return res.status(201).json(user);
   } catch (error) {
     console.error("googleSignup error:", error);
-    return res.status(500).json({ message: `googleSignup error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -166,6 +184,8 @@ export const googleLogin = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error("googleLogin error:", error);
-    return res.status(500).json({ message: `googleLogin error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };

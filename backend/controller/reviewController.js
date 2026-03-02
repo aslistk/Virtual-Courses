@@ -12,11 +12,9 @@ export const createReview = async (req, res) => {
     // Check if user is enrolled in the course
     const isEnrolled = course.enrolledStudents?.includes(userId);
     if (!isEnrolled) {
-      return res
-        .status(403)
-        .json({
-          message: "You must be enrolled in this course to leave a review",
-        });
+      return res.status(403).json({
+        message: "You must be enrolled in this course to leave a review",
+      });
     }
 
     // Optional: prevent duplicate review by same user
@@ -44,7 +42,9 @@ export const createReview = async (req, res) => {
     return res.status(201).json(review);
   } catch (error) {
     console.error("Add Review Error:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 

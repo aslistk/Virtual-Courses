@@ -128,7 +128,7 @@ function ViewCourse() {
       };
       const rzp = new window.Razorpay(options).open();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -166,13 +166,13 @@ function ViewCourse() {
   const avgRating = calculateAvgReview(selectedCourse?.reviews);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-xl p-6 space-y-6 relative">
+    <div className="min-h-screen bg-[#0B1220] p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto bg-[#111827] border border-white/10 shadow-2xl shadow-blue-500/5 rounded-2xl p-6 space-y-6 relative">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row gap-6 ">
+        <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-1/2">
             <FaArrowLeftLong
-              className="text-[black] w-[22px] h-[22px] cursor-pointer"
+              className="text-gray-300 hover:text-blue-400 w-[22px] h-[22px] cursor-pointer mb-3 transition-all duration-300"
               onClick={() => navigate("/")}
             />
             {selectedCourse?.thumbnail ? (
@@ -189,43 +189,44 @@ function ViewCourse() {
               />
             )}
           </div>
-          <div className="flex-1 space-y-2 mt-[20px]">
-            <h1 className="text-2xl font-bold">{selectedCourse?.title}</h1>
-            <p className="text-gray-600">{selectedCourse?.subTitle}</p>
+          <div className="flex-1 space-y-3 mt-[20px]">
+            <h1 className="text-2xl font-bold text-white">
+              {selectedCourse?.title}
+            </h1>
+            <p className="text-gray-300">{selectedCourse?.subTitle}</p>
 
             {/* Rating & Price */}
-            <div className="flex items-start flex-col justify-between">
-              <div className="text-yellow-500 font-medium flex gap-2">
+            <div className="flex items-start flex-col justify-between gap-2">
+              <div className="text-yellow-400 font-medium flex gap-2">
                 ⭐{avgRating}
-                <span className="text-gray-500">
-                  {" "}
+                <span className="text-gray-400">
                   ({selectedCourse?.reviews?.length || 0} reviews)
                 </span>
               </div>
               <div>
-                <span className="text-xl font-semibold text-black">
+                <span className="text-xl font-semibold text-white">
                   ₹{selectedCourse?.price}
                 </span>{" "}
-                <span className="line-through text-sm text-gray-400">
+                <span className="line-through text-sm text-gray-500">
                   ₹1499
                 </span>
               </div>
             </div>
-            <ul className="text-sm text-gray-700 space-y-1 pt-2">
+            <ul className="text-sm text-gray-300 space-y-1 pt-2">
               <li>✅ 10+ hours of video content</li>
               <li>✅ Lifetime access to course materials</li>
             </ul>
             {/* Enroll Button */}
             {!isEnrolled ? (
               <button
-                className="bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3"
+                className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-500 hover:scale-105 active:scale-95 mt-3 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/20"
                 onClick={() => handleEnroll(courseId, userData._id)}
               >
                 Enroll Now
               </button>
             ) : (
               <button
-                className="bg-green-200 text-green-600 px-6 py-2 rounded hover:bg-gray-700 hover:border mt-3"
+                className="bg-green-600/20 border border-green-500/40 text-green-400 px-6 py-2 rounded-xl hover:bg-green-600/30 mt-3 transition-all duration-300"
                 onClick={() => navigate(`/viewlecture/${courseId}`)}
               >
                 Watch Now
@@ -234,36 +235,40 @@ function ViewCourse() {
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-semibold mb-2">What You’ll Learn</h2>
-          <ul className="list-disc pl-6 text-gray-700 space-y-1">
+          <h2 className="text-xl font-semibold mb-2 text-white">
+            What You'll Learn
+          </h2>
+          <ul className="list-disc pl-6 text-white space-y-1">
             <li>Learn {selectedCourse?.category} from Beginning</li>
           </ul>
         </div>
         {/* Requirements */}
         <div>
-          <h2 className="text-xl font-semibold mb-2">Requirements</h2>
-          <p className="text-gray-700">
+          <h2 className="text-xl font-semibold mb-2 text-white">
+            Requirements
+          </h2>
+          <p className="text-white">
             Basic programming knowledge is helpful but not required.
           </p>
         </div>
 
         {/* Who This Course Is For */}
         <div>
-          <h2 className="text-xl font-semibold mb-2">
+          <h2 className="text-xl font-semibold mb-2 text-white">
             Who this course is for?{" "}
           </h2>
-          <p className="text-gray-700">
+          <p className="text-white">
             Beginners, aspiring developers, and professionals looking to upgrade
             skills.
           </p>
         </div>
         {/* course lecture   */}
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="bg-white w-full md:w-2/5 p-6 rounded-2xl shadow-lg border border-gray-200">
-            <h2 className="text-xl font-bold mb-1 text-gray-800">
+          <div className="bg-white/5 border border-white/10 w-full md:w-2/5 p-6 rounded-2xl shadow-lg">
+            <h2 className="text-xl font-bold mb-1 text-white">
               Course Curriculum
             </h2>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-gray-400 mb-4">
               {selectedCourse?.lectures?.length} Lectures
             </p>
             <div className="flex flex-col gap-3">
@@ -276,28 +281,28 @@ function ViewCourse() {
                       setSelectedLecture(lecture);
                     }
                   }}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-200 text-left ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-300 text-left ${
                     lecture.isPreviewFree
-                      ? "hover:bg-gray-100 cursor-pointer border-gray-300"
-                      : "cursor-not-allowed opacity-60 border-gray-200"
+                      ? "hover:bg-blue-600/20 hover:border-blue-500/50 cursor-pointer border-white/10"
+                      : "cursor-not-allowed opacity-50 border-white/5"
                   } ${
                     selectedLecture?.lectureTitle === lecture.lectureTitle
-                      ? "bg-gray-100 border-gray-400"
+                      ? "bg-blue-600/20 border-blue-500/50"
                       : ""
                   }`}
                 >
-                  <span className="text-lg text-gray-700">
+                  <span className="text-lg text-blue-400">
                     {lecture.isPreviewFree ? <FaPlayCircle /> : <FaLock />}
                   </span>
-                  <span className="text-sm font-medium text-gray-800">
+                  <span className="text-sm font-medium text-gray-200">
                     {lecture.lectureTitle}
                   </span>
                 </button>
               ))}
             </div>
           </div>
-          <div className="bg-white w-full md:w-3/5 p-6 rounded-2xl shadow-lg border border-gray-200">
-            <div className="aspect-video w-full rounded-lg overflow-hidden mb-4 bg-black flex items-center justify-center">
+          <div className="bg-white/5 border border-white/10 w-full md:w-3/5 p-6 rounded-2xl shadow-lg">
+            <div className="aspect-video w-full rounded-xl overflow-hidden mb-4 bg-[#0B1220] border border-white/10 flex items-center justify-center">
               {selectedLecture?.videoUrl ? (
                 <video
                   src={selectedLecture.videoUrl}
@@ -305,20 +310,22 @@ function ViewCourse() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-white text-sm">
+                <span className="text-gray-400 text-sm">
                   Select a preview lecture to watch
                 </span>
               )}
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            <h3 className="text-lg font-semibold text-white mb-1">
               {selectedLecture?.lectureTitle || "Lecture Title"}
             </h3>
-            <p className="text-gray-600 text-sm">{selectedCourse?.title}</p>
+            <p className="text-gray-400 text-sm">{selectedCourse?.title}</p>
           </div>
         </div>
-        <div className="mt-8 border-t pt-6">
-          <h2 className="text-xl font-semibold mb-2">Write a Review</h2>
+        <div className="mt-8 border-t border-white/10 pt-6">
+          <h2 className="text-xl font-semibold mb-2 text-white">
+            Write a Review
+          </h2>
           {isEnrolled ? (
             <div className="mb-4">
               <div className="flex gap-1 mb-2">
@@ -326,9 +333,9 @@ function ViewCourse() {
                   <FaStar
                     key={star}
                     onClick={() => setRating(star)}
-                    className={
-                      rating >= star ? "fill-yellow-400" : "fill-gray-300"
-                    }
+                    className={`cursor-pointer w-5 h-5 transition-all duration-300 ${
+                      rating >= star ? "fill-yellow-400" : "fill-gray-600"
+                    }`}
                   />
                 ))}
               </div>
@@ -336,55 +343,57 @@ function ViewCourse() {
                 onChange={(e) => setComment(e.target.value)}
                 value={comment}
                 placeholder="Write your comment here..."
-                className="w-full border border-gray-300 rounded-lg p-2"
+                className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 rows="3"
               />
               <button
-                className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+                className="bg-blue-600 text-white mt-3 px-4 py-2 rounded-xl hover:bg-blue-500 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/20"
                 onClick={handleReview}
                 disabled={loading}
               >
                 {loading ? (
-                  <ClipLoader size={30} color="white" />
+                  <ClipLoader size={22} color="white" />
                 ) : (
                   "Submit Review"
                 )}
               </button>
             </div>
           ) : (
-            <p className="text-red-600 font-semibold">
+            <p className="text-red-400 font-semibold">
               You must enroll in this course to leave a review.
             </p>
           )}
-          <div className="flex items-center gap-4 pt-8 border-t">
+          <div className="flex items-center gap-4 pt-8 border-t border-white/10">
             {creatorData?.photoUrl ? (
               <img
                 src={creatorData?.photoUrl}
                 alt="Instructor"
-                className="w-16 h-16 rounded-full object-cover border-1 border-gray-200"
+                className="w-16 h-16 rounded-full object-cover border-2 border-blue-500/40"
               />
             ) : (
               <img
                 src={img}
                 alt="Instructor"
-                className="w-16 h-16 rounded-full object-cover border-1 border-gray-200"
+                className="w-16 h-16 rounded-full object-cover border-2 border-white/20"
               />
             )}
             <div>
-              <h3 className="text-lg font-semibold">{creatorData?.name}</h3>
-              <p className="md:text-sm text-gray-600 text-[10px] ">
+              <h3 className="text-lg font-semibold text-white">
+                {creatorData?.name}
+              </h3>
+              <p className="md:text-sm text-gray-300 text-[10px]">
                 {creatorData?.description}
               </p>
-              <p className="md:text-sm text-gray-600 text-[10px] ">
+              <p className="md:text-sm text-gray-400 text-[10px]">
                 {creatorData?.email}
               </p>
             </div>
           </div>
           <div>
-            <p className="text-xl font-semibold mb-">
+            <p className="text-xl font-semibold mb-3 text-white">
               Other Published Courses by the Educator -
             </p>
-            <div className="w-full transition-all duration-300 py-[20px]   flex items-start justify-center lg:justify-start flex-wrap gap-6 lg:px-[80px] ">
+            <div className="w-full transition-all duration-300 py-[20px] flex items-start justify-center lg:justify-start flex-wrap gap-6 lg:px-[80px]">
               {creatorCourses?.map((item, index) => (
                 <Card
                   key={index}

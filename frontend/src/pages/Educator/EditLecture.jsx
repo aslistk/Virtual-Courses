@@ -37,11 +37,14 @@ function EditLecture() {
         { withCredentials: true },
       );
       dispatch(setLectureData([...lectureData, result.data]));
-      toast.success("Lecture Updated");
+      toast.success("Lecture updated successfully.");
       navigate("/courses");
       setLoading(false);
     } catch (error) {
-      toast.error(error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      );
     }
   };
 
@@ -54,22 +57,22 @@ function EditLecture() {
       );
       setLoading1(false);
       navigate(`/createLecture/${courseId}`);
-      toast.success("Lecture removed");
+      toast.success("Lecture removed successfully.");
     } catch (error) {
       setLoading1(false);
       toast.error(error.response.data.message);
     }
   };
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-6 space-y-6">
+    <div className="min-h-screen bg-[#0B1220] flex items-center justify-center p-4">
+      <div className="w-full max-w-xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-2xl shadow-blue-500/10 rounded-2xl p-6 space-y-6">
         {/* Header Inside Box */}
         <div className="flex items-center gap-2 mb-2">
           <FaArrowLeft
-            className="text-gray-600 cursor-pointer"
+            className="text-gray-400 hover:text-blue-400 cursor-pointer transition-all duration-300"
             onClick={() => navigate(`/createlecture/${courseId}`)}
           />
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-xl font-semibold text-white">
             Update Your Lecture
           </h2>
         </div>
@@ -92,12 +95,12 @@ function EditLecture() {
         {/* Input Fields */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Title
             </label>
             <input
               type="text"
-              className="w-full p-3 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[black]focus:outline-none"
+              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 p-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
               required
               onChange={(e) => setLectureTitle(e.target.value)}
               value={lectureTitle}
@@ -105,14 +108,14 @@ function EditLecture() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Video *
             </label>
             <input
               type="file"
               required
               accept="video/*"
-              className="w-full border border-gray-300 rounded-md p-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-700 file:text-[white] hover:file:bg-gray-500"
+              className="w-full bg-white/5 border border-white/10 text-gray-300 rounded-lg p-2 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-600/20 file:text-blue-300 hover:file:bg-blue-600/30 transition-all duration-300"
               onChange={(e) => setVideoUrl(e.target.files[0])}
             />
           </div>
@@ -122,10 +125,10 @@ function EditLecture() {
             <input
               type="checkbox"
               id="isFree"
-              className="accent-[black] h-4 w-4"
+              className="accent-blue-500 h-4 w-4"
               onChange={() => setIsPreviewFree((prev) => !prev)}
             />
-            <label htmlFor="isFree" className="text-sm text-gray-700">
+            <label htmlFor="isFree" className="text-sm text-gray-300">
               Is this video Free?
             </label>
           </div>
@@ -135,7 +138,7 @@ function EditLecture() {
         {/* Submit Button */}
         <div className="pt-4">
           <button
-            className="w-full bg-black text-white py-3 rounded-md text-sm font-medium hover:bg-gray-700 transition"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-medium hover:bg-blue-500 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/20"
             disabled={loading}
             onClick={handleEditLecture}
           >

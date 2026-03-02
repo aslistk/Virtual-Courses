@@ -12,67 +12,69 @@ import { useNavigate } from "react-router-dom";
 function ExploreCourses() {
   const navigate = useNavigate();
   return (
-    <div className="w-[100vw] min-h-[50vh] lg:h-[50vh] flex flex-col lg:flex-row items-center justify-center gap-4 px-[30px]">
-      <div className="w-[100%] lg:w-[350px] lg:h-[100%] h-[400px]  flex flex-col items-start justify-center gap-1 md:px-[40px]  px-[20px]">
-        <span className="text-[35px] font-semibold">Explore</span>
-        <span className="text-[35px] font-semibold">Our Courses</span>
-        <p className="text-[17px]">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem vel iure
-          explicabo laboriosam accusantium expedita laudantium facere magnam.
+    <div className="w-full min-h-[50vh] bg-[#0B1220] flex flex-col lg:flex-row items-center justify-center gap-4 px-8 py-12">
+      <div className="w-full lg:w-[350px] lg:h-full h-auto flex flex-col items-start justify-center gap-1 md:px-10 px-5">
+        <span className="text-[35px] font-semibold text-white">Explore</span>
+        <span className="text-[35px] font-semibold text-white">
+          Our Courses
+        </span>
+        <p className="text-[17px] text-gray-300">
+          Discover courses across tech, AI, design and more — built by experts
+          to help you grow your skills and advance your career.
         </p>
         <button
-          className="px-[20px] py-[10px] border-2 bg-[black] border-white text-white rounded-[10px] text-[18px] font-light flex gap-2 mt-[40px]"
+          className="px-5 py-2 bg-blue-600 hover:bg-blue-500 hover:scale-105 active:scale-95 text-white rounded-xl text-[18px] font-light flex gap-2 mt-10 transition-all duration-300 shadow-lg shadow-blue-500/20"
           onClick={() => navigate("/allcourses")}
         >
-          Explore Courses <SiViaplay className="w-[30px] h-[30px] fill-white" />
+          Explore Courses <SiViaplay className="w-[28px] h-[28px] fill-white" />
         </button>
       </div>
-      <div className="w-[720px] max-w-[90%] lg:h-[300px] md:min-h-[300px] flex items-center justify-center lg:gap-[60px] gap-[50px] flex-wrap mb-[50px] lg:mb-[0px]">
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center ">
-          <div className="w-[100px] h-[90px] bg-[#fbd9fb] rounded-lg flex items-center justify-center ">
-            <TbDeviceDesktopAnalytics className="w-[60px] h-[60px] text-[#6d6c6c]" />
+      <div className="w-[720px] max-w-[90%] lg:h-[300px] md:min-h-[300px] flex items-center justify-center lg:gap-[60px] gap-[50px] flex-wrap mb-12 lg:mb-0">
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <TbDeviceDesktopAnalytics className="w-[60px] h-[60px] text-blue-400" />
           </div>
           Web Development
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center ">
-          <div className="w-[100px] h-[90px] bg-[#d9fbe0] rounded-lg flex items-center justify-center ">
-            <LiaUikit className="w-[60px] h-[60px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <LiaUikit className="w-[60px] h-[60px] text-blue-400" />
           </div>
           UI/UX Designing
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center">
-          <div className="w-[100px] h-[90px] bg-[#fcb9c8] rounded-lg flex items-center justify-center ">
-            <MdAppShortcut className="w-[50px] h-[50px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <MdAppShortcut className="w-[50px] h-[50px] text-blue-400" />
           </div>
           App Development
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center">
-          <div className="w-[100px] h-[90px] bg-[#fbd9fb] rounded-lg flex items-center justify-center ">
-            <FaHackerrank className="w-[55px] h-[55px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <FaHackerrank className="w-[55px] h-[55px] text-blue-400" />
           </div>
           Ethical Hacking
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center">
-          <div className="w-[100px] h-[90px] bg-[#d9fbe0] rounded-lg flex items-center justify-center ">
-            <TbBrandOpenai className="w-[55px] h-[55px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <TbBrandOpenai className="w-[55px] h-[55px] text-blue-400" />
           </div>
           AI/ML
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center">
-          <div className="w-[100px] h-[90px] bg-[#fcb9c8] rounded-lg flex items-center justify-center ">
-            <SiGoogledataproc className="w-[45px] h-[45px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <SiGoogledataproc className="w-[45px] h-[45px] text-blue-400" />
           </div>
           Data Science
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center ">
-          <div className="w-[100px] h-[90px] bg-[#fbd9fb] rounded-lg flex items-center justify-center ">
-            <BsClipboardDataFill className="w-[50px] h-[50px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <BsClipboardDataFill className="w-[50px] h-[50px] text-blue-400" />
           </div>
           Data Analytics
         </div>
-        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center">
-          <div className="w-[100px] h-[90px] bg-[#d9fbe0] rounded-lg flex items-center justify-center ">
-            <SiOpenaigym className="w-[50px] h-[50px] text-[#6d6c6c]" />
+        <div className="w-[100px] h-[130px] font-light text-[13px] flex flex-col gap-3 text-center text-gray-300">
+          <div className="w-[100px] h-[90px] bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-blue-600/20 transition-all duration-300">
+            <SiOpenaigym className="w-[50px] h-[50px] text-blue-400" />
           </div>
           AI Tools
         </div>

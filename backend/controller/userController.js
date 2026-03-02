@@ -12,7 +12,9 @@ export const getCurrentUser = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error("getCurrentUser error:", error);
-    return res.status(500).json({ message: `GetCurrent User error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -35,6 +37,8 @@ export const UpdateProfile = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error("UpdateProfile error:", error);
-    return res.status(500).json({ message: `Update Profile Error  ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };

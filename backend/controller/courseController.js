@@ -11,7 +11,7 @@ export const createCourse = async (req, res) => {
     if (!title || !category) {
       return res
         .status(400)
-        .json({ message: "title and category is required" });
+        .json({ message: "Title and category are required." });
     }
     const course = await Course.create({
       title,
@@ -23,7 +23,7 @@ export const createCourse = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to create course ${error}` });
+      .json({ message: "Failed to create the course. Please try again." });
   }
 };
 
@@ -40,7 +40,7 @@ export const getPublishedCourses = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to get published courses ${error}` });
+      .json({ message: "Failed to load published courses. Please try again." });
   }
 };
 
@@ -55,7 +55,7 @@ export const getCreatorCourses = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to get creator courses ${error}` });
+      .json({ message: "Failed to load your courses. Please try again." });
   }
 };
 
@@ -97,7 +97,7 @@ export const editCourse = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to update course ${error}` });
+      .json({ message: "Failed to update the course. Please try again." });
   }
 };
 
@@ -124,12 +124,12 @@ export const removeCourse = async (req, res) => {
     }
 
     await Course.findByIdAndDelete(courseId);
-    return res.status(200).json({ message: "Course Removed Successfully" });
+    return res.status(200).json({ message: "Course removed successfully." });
   } catch (error) {
     console.error("Remove course error:", error);
     return res
       .status(500)
-      .json({ message: `Failed to remove course ${error}` });
+      .json({ message: "Failed to remove the course. Please try again." });
   }
 };
 
@@ -153,7 +153,7 @@ export const createLecture = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to Create Lecture ${error}` });
+      .json({ message: "Failed to create the lecture. Please try again." });
   }
 };
 
@@ -168,7 +168,9 @@ export const getCourseLecture = async (req, res) => {
     await course.save();
     return res.status(200).json(course);
   } catch (error) {
-    return res.status(500).json({ message: `Failed to get Lectures ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Failed to load lectures. Please try again." });
   }
 };
 
@@ -194,7 +196,7 @@ export const editLecture = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to edit Lectures ${error}` });
+      .json({ message: "Failed to update the lecture. Please try again." });
   }
 };
 
@@ -211,11 +213,11 @@ export const removeLecture = async (req, res) => {
       { lectures: lectureId },
       { $pull: { lectures: lectureId } },
     );
-    return res.status(200).json({ message: "Lecture RemovedSuccessfully" });
+    return res.status(200).json({ message: "Lecture removed successfully." });
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Failed to remove Lectures ${error}` });
+      .json({ message: "Failed to remove the lecture. Please try again." });
   }
 };
 
@@ -228,6 +230,8 @@ export const getCreatorById = async (req, res) => {
     }
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ message: `Failed to get creator ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Failed to load creator details. Please try again." });
   }
 };

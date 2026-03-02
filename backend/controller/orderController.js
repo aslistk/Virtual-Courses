@@ -26,7 +26,7 @@ export const RazorPayOrder = async (req, res) => {
     console.error("RazorPay order error:", error);
     return res
       .status(500)
-      .json({ message: `Failed to create RazorPay order  ${error}` });
+      .json({ message: "Failed to create payment order. Please try again." });
   }
 };
 
@@ -62,7 +62,8 @@ export const verifyPayment = async (req, res) => {
   } catch (error) {
     console.error("Payment verification error:", error);
     return res.status(500).json({
-      message: `Internal server error during payment verification ${error}`,
+      message:
+        "Something went wrong during payment verification. Please try again.",
     });
   }
 };

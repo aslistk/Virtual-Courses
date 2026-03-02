@@ -65,11 +65,11 @@ function ForgotPassword() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#0B1220] px-4">
       {/* step 1 */}
       {step == 1 && (
-        <div className="bg-white shadow-md rounded-xl p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        <div className="bg-[#111827] border border-white/10 shadow-2xl rounded-xl p-8 max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-6 text-center text-white">
             Forgot Your Password?
           </h2>
 
@@ -77,14 +77,14 @@ function ForgotPassword() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-300"
               >
                 Enter your email address
               </label>
               <input
                 type="email"
                 id="email"
-                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[black]"
+                className="mt-1 w-full px-4 py-2 bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 placeholder="you@example.com"
                 required
                 onChange={(e) => setEmail(e.target.value)}
@@ -94,7 +94,7 @@ function ForgotPassword() {
 
             <button
               type="submit"
-              className="w-full bg-[black] hover:bg-[#4b4b4b] text-white py-2 px-4 rounded-md font-medium cursor-pointer"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-xl font-medium cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/20"
               onClick={sendOtp}
               disabled={loading}
             >
@@ -102,7 +102,7 @@ function ForgotPassword() {
             </button>
           </form>
           <div
-            className="text-sm text-center mt-4"
+            className="text-sm text-center mt-4 text-gray-400 hover:text-blue-400 cursor-pointer transition-all duration-300"
             onClick={() => navigate("/login")}
           >
             Back to Login
@@ -111,8 +111,8 @@ function ForgotPassword() {
       )}
       {/* step 2 */}
       {step == 2 && (
-        <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        <div className="bg-[#111827] border border-white/10 shadow-2xl rounded-xl p-8 max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-6 text-center text-white">
             Enter OTP
           </h2>
 
@@ -122,14 +122,14 @@ function ForgotPassword() {
             <div>
               <label
                 htmlFor="otp"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-300"
               >
                 Please enter the 4-digit code sent to your email.
               </label>
               <input
                 type="text"
                 id="otp"
-                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[black]"
+                className="mt-1 w-full px-4 py-2 bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 placeholder="Enter Here"
                 onChange={(e) => setOtp(e.target.value)}
                 value={otp}
@@ -139,7 +139,7 @@ function ForgotPassword() {
 
             <button
               type="submit"
-              className="w-full bg-[black] hover:bg-[#4b4b4b] text-white py-2 px-4 rounded-md font-medium cursor-pointer"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-xl font-medium cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/20"
               onClick={verifyOTP}
               disabled={loading}
             >
@@ -148,20 +148,20 @@ function ForgotPassword() {
           </form>
 
           <div
-            className="text-sm text-center mt-4"
+            className="text-sm text-center mt-4 text-gray-400 hover:text-blue-400 cursor-pointer transition-all duration-300"
             onClick={() => navigate("/login")}
           >
             Back to Login
           </div>
         </div>
       )}
-      {/* step 3*/}
+      {/* step 3 */}
       {step == 3 && (
-        <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
+        <div className="bg-[#111827] border border-white/10 shadow-2xl rounded-xl p-8 max-w-md w-full">
+          <h2 className="text-2xl font-bold text-center text-white mb-2">
             Reset Your Password
           </h2>
-          <p className="text-sm text-gray-500 text-center mb-6">
+          <p className="text-sm text-gray-400 text-center mb-6">
             Enter a new password below to regain access to your account.
           </p>
 
@@ -170,7 +170,7 @@ function ForgotPassword() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-300 mb-1"
               >
                 New Password
               </label>
@@ -178,7 +178,7 @@ function ForgotPassword() {
                 type="password"
                 id="password"
                 placeholder="Enter new password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[black] focus:outline-none"
+                className="w-full px-4 py-2 bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
                 onChange={(e) => setNewPassword(e.target.value)}
                 value={newpassword}
               />
@@ -188,7 +188,7 @@ function ForgotPassword() {
             <div>
               <label
                 htmlFor="conpassword"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-300 mb-1"
               >
                 Confirm Password
               </label>
@@ -196,7 +196,7 @@ function ForgotPassword() {
                 type="password"
                 id="conpassword"
                 placeholder="Re-enter new password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[black] focus:outline-none"
+                className="w-full px-4 py-2 bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
                 onChange={(e) => setConpassword(e.target.value)}
                 value={conPassword}
               />
@@ -205,7 +205,7 @@ function ForgotPassword() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[black] hover:bg-[#4b4b4b] text-white py-2 rounded-md font-medium"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-xl font-medium hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/20"
               onClick={resetPassword}
               disabled={loading}
             >
@@ -219,7 +219,7 @@ function ForgotPassword() {
 
           {/* Back to login */}
           <div
-            className="text-center text-sm mt-4"
+            className="text-center text-sm mt-4 text-gray-400 hover:text-blue-400 cursor-pointer transition-all duration-300"
             onClick={() => navigate("/login")}
           >
             Back to Login

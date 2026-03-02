@@ -4,7 +4,9 @@ const isAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(401).json({ message: "User doesn't have token" });
+      return res
+        .status(401)
+        .json({ message: "Authentication required. Please log in." });
     }
     let verifyToken;
     try {
@@ -22,7 +24,9 @@ const isAuth = async (req, res, next) => {
     req.userId = verifyToken.userId;
     next();
   } catch (error) {
-    return res.status(500).json({ message: `isAuth error ${error}` });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 export default isAuth;

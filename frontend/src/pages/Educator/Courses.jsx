@@ -32,19 +32,19 @@ function Courses() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div className="w-[100%] min-h-screen p-4 sm:p-6   bg-gray-100">
+    <div className="flex min-h-screen bg-[#0B1220]">
+      <div className="w-[100%] min-h-screen p-4 sm:p-6 bg-[#0B1220]">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 ">
           <div className="flex items-center justify-center gap-3">
             <FaArrowLeftLong
-              className=" w-[22px] h-[22px] cursor-pointer"
+              className=" w-[22px] h-[22px] cursor-pointer text-gray-300 hover:text-blue-400 transition-colors"
               onClick={() => navigate("/dashboard")}
             />
-            <h1 className="text-xl font-semibold">Courses</h1>
+            <h1 className="text-xl font-semibold text-white">Courses</h1>
           </div>
 
           <button
-            className="bg-[black] text-white px-4 py-2 rounded hover:bg-gray-500"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-blue-500/20"
             onClick={() => navigate("/createcourse")}
           >
             Create Course
@@ -53,21 +53,21 @@ function Courses() {
 
         {/* For larger screens (table layout) */}
 
-        <div className="hidden md:block bg-white rounded-xl shadow p-4 overflow-x-auto">
+        <div className="hidden md:block bg-[#111827] border border-white/10 rounded-xl shadow p-4 overflow-x-auto">
           <table className="min-w-full text-sm">
-            <thead className="border-b bg-gray-50">
+            <thead className="border-b border-white/10 bg-white/5">
               <tr>
-                <th className="text-left py-3 px-4">Course</th>
-                <th className="text-left py-3 px-4">Price</th>
-                <th className="text-left py-3 px-4">Status</th>
-                <th className="text-left py-3 px-4">Action</th>
+                <th className="text-left py-3 px-4 text-gray-300">Course</th>
+                <th className="text-left py-3 px-4 text-gray-300">Price</th>
+                <th className="text-left py-3 px-4 text-gray-300">Status</th>
+                <th className="text-left py-3 px-4 text-gray-300">Action</th>
               </tr>
             </thead>
             <tbody>
               {creatorCourseData?.map((course, index) => (
                 <tr
                   key={index}
-                  className="border-b hover:bg-gray-50 transition duration-200"
+                  className="border-b border-white/10 hover:bg-white/5 transition duration-200"
                 >
                   <td className="py-3 px-4 flex items-center gap-4">
                     {course?.thumbnail ? (
@@ -86,9 +86,11 @@ function Courses() {
                     <span>{course?.title}</span>
                   </td>
                   {course?.price ? (
-                    <td className="py-3 px-4">₹{course?.price}</td>
+                    <td className="py-3 px-4 text-gray-200">
+                      ₹{course?.price}
+                    </td>
                   ) : (
-                    <td className="py-3 px-4">₹ NA</td>
+                    <td className="py-3 px-4 text-gray-400">₹ NA</td>
                   )}
                   <td className="py-3 px-4">
                     <span
@@ -116,7 +118,7 @@ function Courses() {
           {creatorCourseData?.map((course, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow p-4 flex flex-col gap-3 "
+              className="bg-[#111827] border border-white/10 rounded-lg shadow p-4 flex flex-col gap-3"
             >
               <div className="flex gap-4 items-center">
                 {course?.thumbnail ? (
@@ -133,13 +135,15 @@ function Courses() {
                   />
                 )}
                 <div className="flex-1">
-                  <h2 className="font-medium text-sm">{course?.title}</h2>
+                  <h2 className="font-medium text-sm text-white">
+                    {course?.title}
+                  </h2>
                   {course?.price ? (
-                    <p className="text-gray-600 text-xs mt-1">
+                    <p className="text-gray-400 text-xs mt-1">
                       ₹{course?.price}
                     </p>
                   ) : (
-                    <p className="text-gray-600 text-xs mt-1">₹ NA</p>
+                    <p className="text-gray-400 text-xs mt-1">₹ NA</p>
                   )}
                 </div>
                 <FaEdit
