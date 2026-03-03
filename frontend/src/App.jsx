@@ -42,7 +42,7 @@ function App() {
         <p className="text-gray-400 text-sm max-w-xs">
           Free services take{" "}
           <span className="text-blue-400 font-medium">20–30 seconds</span> for a
-          cold start. Thank you for your patience!
+          cold start. Thank you for your patience!😊
         </p>
       </div>
     );
