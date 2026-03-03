@@ -32,7 +32,20 @@ function App() {
   getAllReviews();
   const { userData, isLoading } = useSelector((state) => state.user);
 
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen bg-[#0B1220] gap-4 px-4 text-center">
+        <div className="w-12 h-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+        <h2 className="text-white text-xl font-semibold">
+          Please wait while the website loads...
+        </h2>
+        <p className="text-gray-400 text-sm max-w-xs">
+          Free services take{" "}
+          <span className="text-blue-400 font-medium">20–30 seconds</span> for a
+          cold start. Thank you for your patience!
+        </p>
+      </div>
+    );
 
   return (
     <>
